@@ -4,7 +4,10 @@
 
  (defun all-length (top_list)
  	"counts the number of elements in top level of a list"
- 	(do length top_list))
+ 	(do length top_list)
+ 	)
 
- (defun range (list_num element)
+ (defun range (list_num)
+ 	"takes a list of numbers with at least one element and returns list of length 2 of smallest and largest numbers"
  	(do )
+ 	)
