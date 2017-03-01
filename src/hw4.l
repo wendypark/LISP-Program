@@ -19,13 +19,17 @@
 
 (defun range (list_num)
   (COND
-    ((NULL list_num) NULL)
-    ((< (CAR list_num) (range (CDR list_num)))  ) 
-
+    ((NULL list_num) (LIST 1000 -1000 ))
+    ((ATOM list_num)
+      (LIST list_num list_num)
+    )
+    (T
+      (LIST
+        (min (CAR list_num) (CAR(range (CDR list_num))) )
+        (max (CAR list_num) (CAR(CDR(range (CDR list_num)))) )
+      )
+    ) 
   )
-
- 	; "takes a list of numbers with at least one element and returns list of length 2 of smallest and largest numbers"
- 	(list (apply 'min list_num) (apply 'max list_num))
 )
 
 
