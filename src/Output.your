@@ -47,4 +47,106 @@ value:    (1 6)
                     TEST-before
 
 testing:  (BEFORE 'A 'D '(A B C D E F))
+value:    (A B C D)
+
+testing:  (BEFORE 'D 'A '(A B C D E F))
+value:    (D E F)
+
+testing:  (BEFORE 'A 'D '(1 2 3 D A D A))
+value:    (A D)
+
+testing:  (BEFORE 'A 'D '(C A D A B C D))
+value:    (A D)
+
+testing:  (BEFORE 'A 'D 'NIL)
+value:    NIL
+
+testing:  (BEFORE 'A 'B '(1 2 3 A 0 B 4 5 6))
+value:    (A 0 B)
+
+testing:  (BEFORE 'A 'B '(1 2 3 B A B A))
+value:    (A B)
+
+testing:  (BEFORE 'A 'B '(NIL B A C D (2 3)))
+value:    (A C D (2 3))
+
+testing:  (BEFORE 'A 'D '(A))
+value:    (A)
+
+testing:  (BEFORE '(1 2) '(1 2 3) '((1 2) (1 2 3) (1 2) A))
+value:    ((1 2) (1 2 3))
+
+
+                    TEST-split-if
+
+testing:  (SPLIT-IF #'NULL 'NIL)
+value:    (NIL NIL)
+
+testing:  (SPLIT-IF #'LISTP '(1 2 3 NIL (A B) X (HI BYE) Z D))
+value:    ((1 2 3 X Z D) (NIL (A B) (HI BYE)))
+
+testing:  (SPLIT-IF #'ATOM '(A B C D E F NIL H I J NIL L NIL NIL))
+value:    (NIL (A B C D E F NIL H I J NIL L NIL NIL))
+
+testing:  
+(SPLIT-IF
+ #'(LAMBDA (X) (DECLARE (SOURCE ((X) (NOT (= 0 (MOD X 3))))))
+    (NOT (= 0 (MOD X 3))))
+ '(0 22 1 4 9 5 3 6 7 11 33 12 99))
+value:    ((0 9 3 6 33 12 99) (22 1 4 5 7 11))
+
+testing:  
+(SPLIT-IF #'(LAMBDA (X) (DECLARE (SOURCE ((X) (> X 80)))) (> X 80))
+ '(55 66 22 100 99 89 78 83 72 69))
+value:    ((55 66 22 78 72 69) (100 99 89 83))
+
+testing:  
+(SPLIT-IF
+ #'(LAMBDA (X) (DECLARE (SOURCE ((X) (> (CADR X) 70)))) (> (CADR X) 70))
+ '((BOB 70) (LEE 60) (SALLY 88) (MIKE 90) (LISA 100) (DAN 99)))
+value:    (((BOB 70) (LEE 60)) ((SALLY 88) (MIKE 90) (LISA 100) (DAN 99)))
+
+testing:  
+(SPLIT-IF
+ #'(LAMBDA (X) (DECLARE (SOURCE ((X) (EQUAL 'YELLOW (CAR X)))))
+    (EQUAL 'YELLOW (CAR X)))
+ '((YELLOW SARA JUN) (BLUE DAVE FRES) (GREEN CHRIS SEN) (BLACK LARS SEN)
+   (RED MELISSA SOP) (YELLOW KEN SEN) (YELLOW HOLLY SEN)))
+value:    
+(((BLUE DAVE FRES) (GREEN CHRIS SEN) (BLACK LARS SEN) (RED MELISSA SOP))
+ ((YELLOW SARA JUN) (YELLOW KEN SEN) (YELLOW HOLLY SEN)))
+
+testing:  
+(SPLIT-IF
+ #'(LAMBDA (X) (DECLARE (SOURCE ((X) (> (LENGTH X) 3)))) (> (LENGTH X) 3))
+ '((1 2 3) (33) (10 6 5 43 2) (0 A B) (HELLO HOW ARE YOU) NIL (A B C)
+   (VANILLA CHOCOLATE STRAWBERRY) (BOO) (X Y Z U V W) (FOO BOO BAR FOO BOO) (E)
+   (I AM DONE)))
+value:    
+(((1 2 3) (33) (0 A B) NIL (A B C) (VANILLA CHOCOLATE STRAWBERRY) (BOO) (E)
+  (I AM DONE))
+ ((10 6 5 43 2) (HELLO HOW ARE YOU) (X Y Z U V W) (FOO BOO BAR FOO BOO)))
+
+
+                    TEST-group
+
+testing:  (GROUP 'NIL 1)
+value:    NIL
+
+testing:  (GROUP '(A (A B) (C D) E F G) 3)
+value:    ((((((C D) (A B) A) ((NIL))))) (G F E))
+
+testing:  (GROUP '(1 2 3 4 5 5 8 9 A (C D) E F G) 8)
+value:    (((((((9 8 5 5 4 3 2 1) (((((((NIL)))))))))))) (G F E (C D) A))
+
+testing:  (GROUP '(A B C D E F G H) 1)
+value:    (((G) ((F) ((E) ((D) ((C) ((B) ((A) NIL))))))) (H))
+
+testing:  (GROUP '(((F G H))) 3)
+value:    (NIL (((F G H))))
+
+
+                    TEST-mostn
+
+testing:  (MOSTN #'SQR '(1 8 4 8 3 9 8))
 value:    
