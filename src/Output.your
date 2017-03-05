@@ -272,4 +272,13 @@ value:    NIL
                     TEST-Match-Var
 
 testing:  (MATCH-VAR '(PLUS (? A) (? B)) '(PLUS 2 3))
+value:    T
+
+testing:  (EVAL 'A)
+value:    2
+
+testing:  (EVAL 'B)
+value:    3
+
+testing:  (MATCH-VAR '((! U) A (? V)) '(B C A D))
 value:    
