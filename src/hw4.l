@@ -127,24 +127,30 @@
       (let ((result (group (BUTLAST list_input) n)))
         (COND
           ; If result.last == NIL OR result.last.length >= n
-          ((OR
-              (NULL (last result))
-              (>= (LENGTH (last result)) n)
-              );OR
+          ((NULL result)
+            ; (( input ))
+            (LIST (LIST (CAR (last list_input))))
+            );((NULL
+
+          ((>= (LENGTH (CAR (last result))) n)
             (APPEND
+              ; (( ...result )) += (( input ))
               result
               (LIST (LIST (CAR (last list_input))))
               );APPEND
             );((OR
           (T
             (APPEND
-              ; Previous result - result.last
+              ;; (( ...result )) += ((...result + input))
               (BUTLAST result)
-              ; result.last + new value
-              (APPEND
-                (last result)
-                (last list_input)
-                );APPEND
+              (LIST
+                (APPEND
+                  ;; ( ...result )
+                  (CAR (last result))
+                  ;; ( input )
+                  (LIST (CAR (last list_input)))
+                  );APPEND
+                );LISt
               );APPEND
             );T
           );COND
