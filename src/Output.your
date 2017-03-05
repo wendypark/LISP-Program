@@ -161,4 +161,169 @@ value:    (((SQR 4)) 16)
                     TEST-Match
 
 testing:  (MATCH '(THINK ABOUT THAT) '(THINK THAT ABOUT))
-value:    
+value:    NIL
+
+testing:  (MATCH '(THINK ABOUT THAT) '(THINK ABOUT THAT))
+value:    T
+
+testing:  (MATCH '(THINK ABOUT THAT) NIL)
+value:    NIL
+
+testing:  (MATCH NIL 'NIL)
+value:    T
+
+testing:  (MATCH NIL '(NIL))
+value:    NIL
+
+testing:  (MATCH '(NIL NIL) '(NIL))
+value:    NIL
+
+testing:  (MATCH '(NIL NIL) '(NIL NIL))
+value:    T
+
+testing:  (MATCH '(A A) '(A))
+value:    NIL
+
+testing:  (MATCH '(A ?) '(A A))
+value:    T
+
+testing:  (MATCH '(A NIL ?) '(A NIL NIL))
+value:    T
+
+testing:  (MATCH '(? ? ? ?) '(WHAT TIME IS IT))
+value:    T
+
+testing:  (MATCH '(? ? ? ? ?) '(WHAT TIME IS IT NOW AH))
+value:    NIL
+
+testing:  (MATCH '(? ? ? ? ?) '(WHAT TIME IS IT))
+value:    NIL
+
+testing:  (MATCH '(? COLOR APPLE) '(COLOR COLOR APPLE NIL))
+value:    NIL
+
+testing:  (MATCH '(THIS TABLE IS ROUND ?) '(THIS TABLE IS ROUND OR))
+value:    T
+
+testing:  (MATCH '(THIS !) '(THIS TABLE IS ROUND))
+value:    T
+
+testing:  (MATCH '(THIS ! IS ROUND) '(THIS TABLE IS ROUND))
+value:    T
+
+testing:  (MATCH '(THIS TABLE !) '(THIS THIS TABLE IS ROUND))
+value:    NIL
+
+testing:  (MATCH '(! TABLE IS ROUND) '(THIS TABLE IS ROUND OR))
+value:    NIL
+
+testing:  (MATCH '(! TABLE IS ROUND) '(THIS TABLE))
+value:    NIL
+
+testing:  (MATCH '(THIS ! ROUND) '(THIS TABLE IS ROUND))
+value:    T
+
+testing:  (MATCH '(IS THAT FINE ?) '(THAT FINE TOO))
+value:    NIL
+
+testing:  (MATCH '(!) '(NO MATTER WHAT))
+value:    T
+
+testing:  (MATCH '(! !) '(NO MATTER WHAT))
+value:    T
+
+testing:  (MATCH '(! ! !) '(NO MATTER WHAT))
+value:    T
+
+testing:  (MATCH '(! ! ! !) '(NO MATTER WHAT))
+value:    NIL
+
+testing:  (MATCH '(! BIG ! ?) '(A YELLOW BIG WOODEN BAG))
+value:    T
+
+testing:  (MATCH '(! BIG ! ?) '(A YELLOW BIG BAG))
+value:    NIL
+
+testing:  (MATCH '(! ! ? ! !) '(HOW ARE YOU TODAY AH))
+value:    T
+
+testing:  (MATCH '(! ! ! ! !) '(HOW ARE YOU TODAY))
+value:    NIL
+
+testing:  (MATCH '(! ? ? FUNNY !) '(IS IT REALLY FUNNY OR WHAT))
+value:    T
+
+testing:  (MATCH '(! ? ? FUNNY !) '(IS IT REALLY FUNNY))
+value:    NIL
+
+testing:  (MATCH '(? ? ! ? A) '(A A A A))
+value:    NIL
+
+testing:  (MATCH '(? ? ! ? A !) '(A A A A A NIL))
+value:    T
+
+testing:  (MATCH '(! B ? B A B A ! ? !) '(B B A B A B A B A B A))
+value:    T
+
+testing:  (MATCH '(! B ? A B A B ! ? !) '(B B A B A B A B A B))
+value:    NIL
+
+
+                    TEST-Match-Var
+
+testing:  (MATCH-VAR '(PLUS (? A) (? B)) '(PLUS 2 3))
+value:    T
+
+testing:  (EVAL 'A)
+value:    2
+
+testing:  (EVAL 'B)
+value:    3
+
+testing:  (MATCH-VAR '((! U) A (? V)) '(B C A D))
+value:    T
+
+testing:  (EVAL 'U)
+value:    (B C)
+
+testing:  (EVAL 'V)
+value:    D
+
+testing:  (MATCH-VAR '((! U) (? V) C (! W)) '(B C A D))
+value:    NIL
+
+testing:  (MATCH-VAR '(A (! U) A (? V) A (! W)) '(A A A A B A A))
+value:    T
+
+testing:  (EVAL 'U)
+value:    (B C B C A D A A)
+
+testing:  (EVAL 'V)
+value:    B
+
+testing:  (EVAL 'W)
+value:    (A)
+
+testing:  
+(MATCH-VAR '(NIL (! U) (! V) (? W) NIL (! Y) A A)
+ '(NIL NIL A NIL NIL A A NIL A A))
+value:    T
+
+testing:  (EVAL 'U)
+value:    (B C B C A D A A NIL)
+
+testing:  (EVAL 'V)
+value:    (A)
+
+testing:  (EVAL 'W)
+value:    NIL
+
+testing:  (EVAL 'Y)
+value:    (A A NIL)
+
+testing:  (MATCH-VAR '(NIL (! U) (! V) (? W) NIL (! Y) A A) '(NIL A NIL NIL A A NIL A A))
+value:    NIL
+
+
+          DONE TESTING
+

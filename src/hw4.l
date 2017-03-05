@@ -155,3 +155,88 @@
       ((NULL L2) final)
   )
 )
+
+(DEFUN match (pattern assertion)
+  (COND
+    ; End of recursion -- True
+    ((AND (NULL pattern) (NULL assertion))
+      T
+      );(AND
+
+    ; If any lists ended early -- False
+    ((OR (NULL pattern) (NULL assertion))
+      NIL
+      );(AND
+
+    ; Raw elements are equivalent -> Check if tail is True
+    ((EQUAL (CAR pattern) (CAR assertion))
+      (match (CDR pattern) (CDR assertion))
+      );(EQUAL
+
+    ; Special case: ?
+    ((EQUAL '? (CAR pattern))
+      ; Just skip ahead once
+      (match (CDR pattern) (CDR assertion))
+      )
+
+    ; Special case: !
+    ((EQUAL '! (CAR pattern))
+      (match_helper pattern assertion)
+      )
+    );COND
+  );defun
+
+; This only checks for case of !
+; NOTE: pattern - includes the first !
+(DEFUN match_helper (pattern assertion)
+  (COND
+    ; Assertion ended early
+    ((NULL assertion) Nil)
+
+    ; Case: ! is end of pattern
+    ((NULL (CDR pattern))
+      T
+      );(NULL
+
+    ; Case: ! term
+    (T
+      ; Try all cases where assertion moves forward
+      ;   Keep going ahead in pattern until matching next member
+      ;   Keep going ahead in pattern until next next matching next member
+      ;   ... repeat until end
+      (OR
+        (match (CDR pattern) (CDR assertion))
+        (match_helper pattern (CDR assertion))
+        )
+      )
+    );Cond
+  )
+
+(DEFUN match-var (pattern assertion)
+  (COND
+    ; End of recursion -- True
+    ((AND (NULL pattern) (NULL assertion))
+      T
+      );(AND
+
+    ; If any lists ended early -- False
+    ((OR (NULL pattern) (NULL assertion))
+      NIL
+      );(AND
+
+    ; Raw elements are equivalent -> Check if tail is True
+    ((EQUAL (CAR pattern) (CAR assertion))
+      (match-var (CDR pattern) (CDR assertion))
+      );(EQUAL
+
+    ; Special case: ?
+    ((EQUAL '? (CAR(CAR pattern)))
+      (SET (CAR(CDR pattern)) (CAR assertion))
+      )
+
+
+
+
+
+  )
+)
