@@ -149,13 +149,13 @@ value:    ((((F G H))))
                     TEST-mostn
 
 testing:  (MOSTN #'SQR '(1 8 4 8 3 9 8))
-value:    T
+value:    ((9) 81)
 
 testing:  (MOSTN #'EVAL '((+ 1 2) (+ 3 4) (+ 4 3)))
-value:    T
+value:    (((+ 3 4) (+ 4 3)) 7)
 
 testing:  (MOSTN #'EVAL '((SQR 2) (SQR 4) (SQR 3)))
-value:    T
+value:    (((SQR 4)) 16)
 
 
                     TEST-Match

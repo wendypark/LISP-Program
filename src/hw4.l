@@ -159,9 +159,38 @@
     );COND
   );defun
 
-(defun mostn (func list_input)
-  T
+(DEFUN mostn (F L)
+  (COND 
+    ((NULL L) (LIST NIL))
+    (T 
+      (DO (
+            (L2 L (CDR L2)) ;iterator 
+            (SUBLIST NIL 
+              (COND 
+                ((EQUAL (highest_score F L) (FUNCALL F (CAR L2))) (APPEND SUBLIST (LIST (CAR L2)))) 
+                (T SUBLIST)
+              );inner cond
+            );sublist declaration
+          );do 
+          ((NULL L2) (APPEND (LIST SUBLIST) (LIST (highest_score F L))))
+      );do
+    );else
+  );cond
+);DEFUN
+
+(DEFUN highest_score (F L) 
+  (DO (
+        (L2 L (CDR L2)) 
+        (final (FUNCALL F (CAR L)) 
+          (COND 
+            ((> (FUNCALL F (CAR L2)) final) (FUNCALL F (CAR L2)))
+            (T final)
+          )
+        )
+      )
+      ((NULL L2) final)
   )
+)
 
 (defun match (pattern assertion)
   (COND
