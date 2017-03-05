@@ -121,7 +121,7 @@
   (COND
     ((NULL list_input)
       NIL
-      );((NULL
+      );(NULL
     (T
       ; Recurse on all but last element of list
       (let ((result (group (BUTLAST list_input) n)))
@@ -130,7 +130,7 @@
           ((NULL result)
             ; (( input ))
             (LIST (LIST (CAR (last list_input))))
-            );((NULL
+            );(NULL
 
           ((>= (LENGTH (CAR (last result))) n)
             (APPEND
@@ -138,7 +138,7 @@
               result
               (LIST (LIST (CAR (last list_input))))
               );APPEND
-            );((OR
+            );(OR
           (T
             (APPEND
               ;; (( ...result )) += ((...result + input))
@@ -158,3 +158,63 @@
       );T
     );COND
   );defun
+
+(defun mostn (func list_input)
+  T
+  )
+
+(defun match (pattern assertion)
+  (COND
+    ; End of recursion -- True
+    ((AND (NULL pattern) (NULL assertion))
+      T
+      );(AND
+
+    ; If any lists ended early -- False
+    ((OR (NULL pattern) (NULL assertion))
+      NIL
+      );(AND
+
+    ; Raw elements are equivalent -> Check if tail is True
+    ((EQUAL (CAR pattern) (CAR assertion))
+      (match (CDR pattern) (CDR assertion))
+      );(EQUAL
+
+    ; Special case: ?
+    ((EQUAL '? (CAR pattern))
+      ; Just skip ahead once
+      (match (CDR pattern) (CDR assertion))
+      )
+
+    ; Special case: !
+    ((EQUAL '! (CAR pattern))
+      (match_helper pattern assertion)
+      )
+    );COND
+  );defun
+
+; ; Case: ! is end
+;   return true
+; ; Case: ! term
+;   Keep going ahead in pattern until matching next member
+;   Keep going ahead in pattern until next next matching next member
+;   ... repeat until end
+
+; This only checks for case of !
+(defun match_helper (pattern assertion)
+  (COND
+    ; Assertion ended early
+    ((NULL assertion) Nil)
+
+    ; Case: ! is end of pattern
+    ((NULL (CDR pattern))
+      T
+      );(NULL
+
+    ; Case: ! term
+    (T
+      T
+      )
+    );Cond
+  )
+
