@@ -69,7 +69,7 @@
 		        (FINAL L (CDR FINAL)) ;iterator 
 		        (F_L NIL ;empty list
 		        	(COND 
-		        		( (NOT(FUNCALL F (CAR FINAL)))  (APPEND F_L (list (CAR FINAL)))) 
+		        		( (NOT(FUNCALL F (CAR FINAL)))  (APPEND F_L (LIST (CAR FINAL)))) 
 		        		(T F_L)
 		        	);cond
 		        );F_L
@@ -85,30 +85,73 @@
 	)
 )
 )
-
-
-(DEFUN group (L N)
+ 
+(DEFUN group (list_input n)
   (COND
-    ((NULL L) (LIST NIL))
-    ((EQUAL N 1) 
-    	(DO (
-    		  (L2 L (CDR L)) ;iterator
-	          (FINAL NIL (APPEND FINAL (LIST (LIST (CAR L)))))
-            )
-            ((NULL L2) FINAL);terminate when L2 is empty, return FINAL list
-        )
-    )
+    ((NULL list_input)
+      NIL
+      );((NULL
     (T
-    	(DO 
-
-    	)
-
-    )
-
-  )
-
-)
+      ; Recurse on all but last element of list
+      (let ((result (group (BUTLAST list_input) n)))
+        (COND
+          ; If result.last == NIL OR result.last.length >= n
+          ((OR
+              (NULL (last result))
+              (>= (LENGTH (last result)) n)
+              );OR
+            (APPEND
+              result
+              (LIST (LIST (CAR (last list_input))))
+              );APPEND
+            );((OR
+          (T
+            (APPEND
+              ; Previous result - result.last
+              (BUTLAST result)
+              ; result.last + new value
+              (APPEND
+                (last result)
+                (last list_input)
+                );APPEND
+              );APPEND
+            );T
+          );COND
+        );let
+      );T
+    );COND
+  );defun
 
 (DEFUN mostn (F L)
+  (COND 
+    ((NULL L) (LIST NIL))
+    (T 
+      (DO (
+            (L2 L (CDR L2)) ;iterator 
+            (SUBLIST NIL 
+              (COND 
+                ((EQUAL (highest_score F L) (FUNCALL F (CAR L2))) (APPEND SUBLIST (LIST (CAR L2)))) 
+                (T SUBLIST)
+              );inner cond
+            );sublist declaration
+          );do 
+          ((NULL L2) (APPEND (LIST SUBLIST) (LIST (highest_score F L))))
+      );do
+    );else
+  );cond
+);DEFUN
 
+
+(DEFUN highest_score (F L) 
+  (DO (
+        (L2 L (CDR L2)) 
+        (final (FUNCALL F (CAR L)) 
+          (COND 
+            ((> (FUNCALL F (CAR L2)) final) (FUNCALL F (CAR L2)))
+            (T final)
+          )
+        )
+      )
+      ((NULL L2) final)
+  )
 )

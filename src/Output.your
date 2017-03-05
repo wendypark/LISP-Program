@@ -131,4 +131,34 @@ value:
                     TEST-group
 
 testing:  (GROUP 'NIL 1)
+value:    NIL
+
+testing:  (GROUP '(A (A B) (C D) E F G) 3)
+value:    ((A) (A B) (C D) E F G)
+
+testing:  (GROUP '(1 2 3 4 5 5 8 9 A (C D) E F G) 8)
+value:    ((1) 2 3 4 5 5 8 9 A (C D) E F G)
+
+testing:  (GROUP '(A B C D E F G H) 1)
+value:    ((A) (B) (C) (D) (E) (F) (G) (H))
+
+testing:  (GROUP '(((F G H))) 3)
+value:    ((((F G H))))
+
+
+                    TEST-mostn
+
+testing:  (MOSTN #'SQR '(1 8 4 8 3 9 8))
+value:    ((9) 81)
+
+testing:  (MOSTN #'EVAL '((+ 1 2) (+ 3 4) (+ 4 3)))
+value:    (((+ 3 4) (+ 4 3)) 7)
+
+testing:  (MOSTN #'EVAL '((SQR 2) (SQR 4) (SQR 3)))
+value:    (((SQR 4)) 16)
+
+
+                    TEST-Match
+
+testing:  (MATCH '(THINK ABOUT THAT) '(THINK THAT ABOUT))
 value:    
