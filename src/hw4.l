@@ -2,92 +2,113 @@
 ;;; Your solution goes in this file ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun all-length (top_list)
-  (COND
-    ( (NULL top_list) 0)
-    ( (ATOM(CAR top_list))
-      (COND 
-        ((NULL(CAR top_list)) (+ 0 (all-length (CDR top_list)) ))
-        (T (+ 1 (all-length (CDR top_list)) ))
-      )
+(DEFUN all-length (L)
+  (COND 
+    ((NULL L) 0)
+    ((ATOM (CAR L))
+      (COND
+        ((NULL (CAR L))
+        	( +
+        		0
+        		(all-length (CDR L))
+        		);+
+        	);((NULL...
+        (T
+        	( +
+        		1
+        		(all-length (CDR L))
+        		);+
+        	);T
+        );COND
     )
-    (T (+ (all-length (CAR top_list))
-          (all-length (CDR top_list))))
+    (T 
+    	( +
+    		(all-length (CAR L))
+    		(all-length (CDR L))
+    		);+
+    	);T
   )
 )
 
-(defun range (list_num)
-
+(DEFUN range (NEL)
   (COND
-    ((NULL list_num) NULL)
-    ((< (CAR list_num) (range (CDR list_num)))  ) 
-
+    ((NULL NEL) (LIST nil nil))
+    ((EQUAL (LENGTH NEL) 1) (LIST (CAR NEL) (CAR NEL)))
+    (T (LIST (MIN (CAR NEL) (CAR (range(CDR NEL)))) (MAX (CAR NEL) (CADR(range(CDR NEL)))) ))  
   )
-
- 	; "takes a list of numbers with at least one element and returns list of length 2 of smallest and largest numbers"
- 	(list (apply 'min list_num) (apply 'max list_num))
 )
 
+(DEFUN before (A1 A2 L)
+  (COND
+  	((NULL L) NIL)
+    ((EQUAL A1 (CAR L))
+      (COND
+        ((MEMBER A2 (CDR L)) (CONS A1 (before_helper A2 (CDR L))))
+        (T (CONS A1 (CDR L)))
+      )
+     );eq
+    (T (before A1 A2 (CDR L)));else
+  );COND
+);defun
 
 
-(defun before1 (begin end list_input)
-	(cond 
-		((null list_input) nil)
-		(if (equal begin (car list_input))
-			(if (member end '(list_input))
-				(butlast (list_input) (end))
-				(before begin (cdr list_input))
-			))
+(DEFUN before_helper (A2 L)
+  (COND
+    ((EQUAL A2 (CAR L)) (LIST A2))
+    (T
+      (CONS (CAR L) (before_helper A2 (CDR L)))
+      )
+  )
+)
+
+(DEFUN split-if (F L)
+(COND
+	((NULL L) (LIST NIL NIL))
+	(T 
+	    (DO ( ;variables to bind, what their initial values are, and how to update them
+		        (FINAL L (CDR FINAL)) ;iterator 
+		        (F_L NIL ;empty list
+		        	(COND 
+		        		( (NOT(FUNCALL F (CAR FINAL)))  (APPEND F_L (list (CAR FINAL)))) 
+		        		(T F_L)
+		        	);cond
+		        );F_L
+		        (T_L NIL ;empty list
+		        	(COND 
+		        		((FUNCALL F (CAR FINAL)) (APPEND T_L (LIST (CAR FINAL)))) 
+		        		(T T_L)
+		        	);cond
+		        );T_L
+	        )
+	        ((NULL FINAL) (LIST F_L T_L));termination condition and return value 
+	    )
 	)
 )
-
-(defun before2 (begin end list_input)
-	(cond ((null list_input) nil)
-	((equal begin (car list_input)) )
-	((member end '(list_input)) (butlast (end list_input)))
-	(t (before begin (cdr list_input)))
-	)
 )
 
-(defun before3 (begin end list_input)
-	"searches a list and returns a list of all elements in between the first two, inclusive"
-	(COND ;condition
-    ( (NULL list_input) 0) ;if list is empty return 0
-    ( (equal begin (car list_input))) ;if first element of list is an ATOM
-      (COND ;conditions
-        ((member end '(list_input)) (butlast (list_input) (end)))  
-        (T (nil))
-      )
+
+(DEFUN group (L N)
+  (COND
+    ((NULL L) (LIST NIL))
+    ((EQUAL N 1) 
+    	(DO (
+    		  (L2 L (CDR L)) ;iterator
+	          (FINAL NIL (APPEND FINAL (LIST (LIST (CAR L)))))
+            )
+            ((NULL L2) FINAL);terminate when L2 is empty, return FINAL list
+        )
     )
-    (T (before begin end (cdr(list_input)))
+    (T
+    	(DO 
+
+    	)
+
+    )
+
   )
-)
- 
-
-
-(defun split-if (function list_input)
 
 )
 
-(defun group (list_input num)
+(DEFUN mostn (F L)
 
 )
-
-(defun mostn (function list_input)
-
-)
-
-; "3. Write a function before that searches a list and 
-; returns a list of all elements in between the first two arguments (inclusive)."
-
-; (defun before (a b L)
-;   (push
-;     b
-;     (cdr
-;       (loop for i in L
-;         until (EQ i b)
-;         collect i)
-;     )
-;   )
-; )
-
