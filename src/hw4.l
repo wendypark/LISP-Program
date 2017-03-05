@@ -193,15 +193,6 @@
     );COND
   );defun
 
-; ; Case: ! is end
-;   return true
-; ; Case: ! term
-;   Keep going ahead in pattern until matching next member
-;   Keep going ahead in pattern until next next matching next member
-;   ... repeat until end
-
-; Try all cases where assertion moves forward
-
 ; This only checks for case of !
 ; NOTE: pattern - includes the first !
 (defun match_helper (pattern assertion)
@@ -216,6 +207,10 @@
 
     ; Case: ! term
     (T
+      ; Try all cases where assertion moves forward
+      ;   Keep going ahead in pattern until matching next member
+      ;   Keep going ahead in pattern until next next matching next member
+      ;   ... repeat until end
       (OR
         (match (CDR pattern) (CDR assertion))
         (match_helper pattern (CDR assertion))
