@@ -104,43 +104,51 @@
 ;; NOTE: Passing functions as parameters: http://emacs.stackexchange.com/questions/14747/how-to-pass-function-as-argument-in-elisp
 
 
-; Going from backwards
-(defun group_helper (reversed_list_input n)
+; Go forward until nil
+  ; If result.last == NIL OR result.last.length >= n
+    ; add new list to beginning of result
+  ; ELSE
+    ; append value to result.last
+
+; Go backwards from front until nil
+  ; If result.last == NIL OR result.last.length >= n
+    ; append new list to result
+    ; where new list = (list_input.last)
+  ; ELSE
+    ; append list_input.last to result.last
+
+(defun group (list_input n)
   (COND
-    ((NULL reversed_list_input)
-      (LIST NIL)
-      )
+    ((NULL list_input)
+      NIL
+      );((NULL
     (T
-      (let ((result (group_helper (CDR reversed_list_input) n)))
-        ; Add to result[0] if result[0].length < n
+      ; Recurse on all but last element of list
+      (let ((result (group (BUTLAST list_input) n)))
         (COND
-          ((< (LENGTH (CAR result)) n)
-            (LIST
-              (CONS (CAR reversed_list_input)  (CAR result))
-              (CDR result)
-              )
-            )
-          ; Else create a new result[0]
-          (T
-            (LIST
-              (LIST (CAR reversed_list_input))
+          ; If result.last == NIL OR result.last.length >= n
+          ((OR
+              (NULL (last result))
+              (>= (LENGTH (last result)) n)
+              );OR
+            (APPEND
               result
-              ) 
+              (LIST (LIST (CAR (last list_input))))
+              );APPEND
+            );((OR
+          (T
+            (APPEND
+              ; Previous result - result.last
+              (BUTLAST result)
+              ; result.last + new value
+              (APPEND
+                (last result)
+                (last list_input)
+                );APPEND
+              );APPEND
             );T
           );COND
         );let
       );T
-    );COND
-  )
-
-; If null, return nil
-; 
-
-(defun group (list_input n)
-  (COND 
-    ((NULL list_input) nil )
-    (T
-      (REVERSE (group_helper (REVERSE list_input) n))
-      )
     );COND
   );defun

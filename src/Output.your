@@ -134,16 +134,16 @@ testing:  (GROUP 'NIL 1)
 value:    NIL
 
 testing:  (GROUP '(A (A B) (C D) E F G) 3)
-value:    ((((((C D) (A B) A) ((NIL))))) (G F E))
+value:    (A (A B) (C D) E F G)
 
 testing:  (GROUP '(1 2 3 4 5 5 8 9 A (C D) E F G) 8)
-value:    (((((((9 8 5 5 4 3 2 1) (((((((NIL)))))))))))) (G F E (C D) A))
+value:    (1 2 3 4 5 5 8 9 A (C D) E F G)
 
 testing:  (GROUP '(A B C D E F G H) 1)
-value:    (((G) ((F) ((E) ((D) ((C) ((B) ((A) NIL))))))) (H))
+value:    (A B C D E F G H)
 
 testing:  (GROUP '(((F G H))) 3)
-value:    (NIL (((F G H))))
+value:    (((F G H)))
 
 
                     TEST-mostn
