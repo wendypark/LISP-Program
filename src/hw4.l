@@ -141,7 +141,6 @@
   );cond
 );DEFUN
 
-
 (DEFUN highest_score (F L) 
   (DO (
         (L2 L (CDR L2)) 
@@ -155,6 +154,7 @@
       ((NULL L2) final)
   )
 )
+
 
 (DEFUN match (pattern assertion)
   (COND
@@ -212,6 +212,7 @@
     );Cond
   )
 
+
 (DEFUN match-var (pattern assertion)
   (COND
     ; End of recursion -- True
@@ -230,13 +231,41 @@
       );(EQUAL
 
     ; Special case: ?
-    ((EQUAL '? (CAR(CAR pattern)))
-      (SET (CAR(CDR pattern)) (CAR assertion))
+    ((EQUAL '? (CAR (CAR pattern)))
+      ; Just skip ahead once
+      (set (CADAR pattern) (CAR assertion))
+      (match-var (CDR pattern) (CDR assertion))
       )
+    ; Special case: !
+    ((EQUAL '! (CAAR pattern))
+      (match-var_helper pattern assertion)
+      )
+    );COND
+  );defun
 
+; This only checks for case of !
+; NOTE: pattern - includes the first !
+(DEFUN match-var_helper (pattern assertion)
+  (COND
+    ; Assertion ended early
+    ((NULL assertion) NIL) 
 
+    ; Case: ! is end of pattern
+    ((NULL (CDR pattern))
+      T
+      );(NULL
 
-
-
+    ; Case: ! term
+    (T
+      ; Try all cases where assertion moves forward
+      ;   Keep going ahead in pattern until matching next member
+      ;   Keep going ahead in pattern until next next matching next member
+      ;   ... repeat until end
+      (OR
+        (match-var (CDR pattern) (CDR assertion))
+        (match-var_helper pattern (CDR assertion))
+        )
+      )
+    );Cond
   )
-)
+
