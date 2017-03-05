@@ -215,10 +215,10 @@ testing:  (MATCH '(THIS TABLE !) '(THIS THIS TABLE IS ROUND))
 value:    NIL
 
 testing:  (MATCH '(! TABLE IS ROUND) '(THIS TABLE IS ROUND OR))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(! TABLE IS ROUND) '(THIS TABLE))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(THIS ! ROUND) '(THIS TABLE IS ROUND))
 value:    T
@@ -236,28 +236,28 @@ testing:  (MATCH '(! ! !) '(NO MATTER WHAT))
 value:    T
 
 testing:  (MATCH '(! ! ! !) '(NO MATTER WHAT))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(! BIG ! ?) '(A YELLOW BIG WOODEN BAG))
 value:    T
 
 testing:  (MATCH '(! BIG ! ?) '(A YELLOW BIG BAG))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(! ! ? ! !) '(HOW ARE YOU TODAY AH))
 value:    T
 
 testing:  (MATCH '(! ! ! ! !) '(HOW ARE YOU TODAY))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(! ? ? FUNNY !) '(IS IT REALLY FUNNY OR WHAT))
 value:    T
 
 testing:  (MATCH '(! ? ? FUNNY !) '(IS IT REALLY FUNNY))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(? ? ! ? A) '(A A A A))
-value:    T
+value:    NIL
 
 testing:  (MATCH '(? ? ! ? A !) '(A A A A A NIL))
 value:    T
@@ -266,7 +266,7 @@ testing:  (MATCH '(! B ? B A B A ! ? !) '(B B A B A B A B A B A))
 value:    T
 
 testing:  (MATCH '(! B ? A B A B ! ? !) '(B B A B A B A B A B))
-value:    T
+value:    NIL
 
 
                     TEST-Match-Var

@@ -200,7 +200,10 @@
 ;   Keep going ahead in pattern until next next matching next member
 ;   ... repeat until end
 
+; Try all cases where assertion moves forward
+
 ; This only checks for case of !
+; NOTE: pattern - includes the first !
 (defun match_helper (pattern assertion)
   (COND
     ; Assertion ended early
@@ -213,8 +216,13 @@
 
     ; Case: ! term
     (T
-      T
+      (OR
+        (match (CDR pattern) (CDR assertion))
+        (match_helper pattern (CDR assertion))
+        )
       )
     );Cond
   )
+
+
 
